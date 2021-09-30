@@ -57,20 +57,21 @@ class Person(models.Model):
     user=models.ForeignKey(User,on_delete=CASCADE)
     email=models.EmailField(max_length=50)
     name=models.CharField(max_length=30)
-    phone_no=models.CharField(max_length=10)
-    customer_image=models.ImageField(upload_to='productimg')
-    landmark=models.CharField(max_length=25)
-    city=models.CharField(max_length=20)
-    zipcode=models.IntegerField()
-    state=models.CharField(choices=STATE_CHOICES,max_length=50)
-    is_seller=models.BooleanField()
-    email_verified=models.BooleanField()
-    phone_no_verified=models.BooleanField()
-    card_type=models.CharField(choices=CARD_CHOICES,max_length=20)
-    card_no=models.CharField(max_length=16)
-    card_holder=models.CharField(max_length=30)
-    valid_from=models.DateField()
-    valid_through=models.DateField()
+    phone_no=models.CharField(max_length=10,blank=True,null=True)
+    customer_image=models.ImageField(upload_to='productimg',blank=True,null=True)
+    house_no=models.CharField(max_length=10,blank=True,null=True)
+    landmark=models.CharField(max_length=25,blank=True,null=True)
+    city=models.CharField(max_length=20,blank=True,null=True)
+    zipcode=models.IntegerField(blank=True,null=True)
+    state=models.CharField(choices=STATE_CHOICES,max_length=50,blank=True,null=True)
+    is_seller=models.BooleanField(blank=True,null=True)
+    email_verified=models.BooleanField(blank=True,null=True)
+    phone_no_verified=models.BooleanField(blank=True,null=True)
+    card_type=models.CharField(choices=CARD_CHOICES,max_length=20,blank=True,null=True)
+    card_no=models.CharField(max_length=16,blank=True,null=True)
+    card_holder=models.CharField(max_length=30,blank=True,null=True)
+    valid_from=models.DateField(blank=True,null=True)
+    valid_through=models.DateField(blank=True,null=True)
 
 
     def __str__(self):
@@ -80,7 +81,7 @@ BRAND_CHOICES=(
     ('samsung','samsung'),
     ('oppo','oppo'),
     ('vivo','vivo'),
-    ('mi','mi'),
+    ('xiaomi','xiaomi'),
     ('realme','realme'),
     ('oneplus','oneplus'),   
 )        
@@ -127,8 +128,13 @@ class Cart(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity=models.PositiveIntegerField(default=1)
 
+
     def __str__(self):
         return str(self.id)
+
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.selling_price    
 
 STATUS_CHOICES=(
     ('Accepted','Accepted'),
@@ -144,5 +150,9 @@ class OrderPlaced(models.Model):
     product=models.ForeignKey(Product,on_delete=CASCADE)
     quantity=models.PositiveIntegerField(default=1)
     ordered_date=models.DateTimeField(auto_now_add=True)
-    status=models.CharField(max_length=20,choices=STATUS_CHOICES,default='pending')        
+    status=models.CharField(max_length=20,choices=STATUS_CHOICES,default='pending')
+
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.selling_price        
         

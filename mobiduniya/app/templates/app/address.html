@@ -1,40 +1,59 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Buy Now{% endblock title %}
+{% block title %}Address{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
- <h3>Welcome Sonam</h3>
+ <h3>Welcome <span class="text-capitalize">{{request.user}}</span></h3>
   <div class="col-sm-2 border-end">
-   <ul class="list-unstyled">
-    <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
-    <li class="d-grid"><a href="{% url 'address' %}" class="btn">Address</a></li>
+   <ul class="list-unstyled menu-list"  >
+    <li class="d-grid"><a href="{% url 'profile' %}" style="color:#ccc;" class="btn">Profile</a></li>
+    <li class="d-grid"><a href="{% url 'address' %}" style="color:#ccc;" class="btn {{active}}">Address</a></li>
    </ul>
   </div>
   <div class="col-sm-9 offset-sm-1">
    <div class="row">
+       {% for ad in add %}
     <div class="col-sm-6">
-     <div class="card">
+     <div class="card" style="box-shadow: 4px 4px 4px #000;" >
+         <div class="card-header" style="background: #2d2d2d; color: #ccc;" >
+             Address {{forloop.counter}}
+         </div>
       <div class="card-body">
-       <h3>Address 1</h3>
-       <p>Name: Rahul Kumar</p>
-       <p>Address 1: Lalpur</p>
-       <p>Address 2: Ranchi</p>
-       <p>State: Jharkhand</p>
+       <!-- <p>Name: {{ad.name}}</p>
+       <p>Landmark: {{ad.landmark}}</p>
+       <p>City: {{ad.city}}</p>
+       <p>State: {{ad.state}}</p>
+       <p>Pin Code: {{ad.zipcode}}</p>  -->
+        <table class="table-striped w-100">
+            <tBody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ad.name}}</td>
+                </tr>
+                <tr>
+                    <th>Landmark</th>
+                    <td>{{ad.landmark}}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ad.city}}</td>
+                </tr>
+                <tr>
+                    <th>State</th>
+                    <td>{{ad.state}}</td>
+                </tr>
+                <tr>
+                    <th>Zipcode</th>
+                    <td>{{ad.zipcode}}</td>
+                </tr>
+            </tBody>
+        </table>
       </div>
      </div>
     </div>
-    <div class="col-sm-6">
-     <div class="card">
-      <div class="card-body">
-       <h3>Address 2</h3>
-       <p>Name: Rohit Kumar</p>
-       <p>Address 1: Lalpur</p>
-       <p>Address 2: Ranchi</p>
-       <p>State: Jharkhand</p>
-      </div>
-     </div>
-    </div>
+    {% endfor %}
+    
    </div>
   </div>
  </div>

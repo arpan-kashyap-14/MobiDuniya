@@ -5,10 +5,10 @@
 <div class="container" style="margin-top: 90px;">
  <div class="row my-3">
   <div class="col-sm-6 offset-sm-3">
-   <h3>Customer Registration</h3>
+   <h3 class="text-center dark-header" style="color: #ccc;">Customer Registration</h3>
    <hr>
 
-   <form action="" method="post" novalidate class="shadow p-5">
+   <form action="" method="post" novalidate class="shadow p-5 dark-header" style="color: #ccc; text-transform: capitalize;">
       {% if messages %}
       {% for message in messages %}
       <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>{{message}}</p>
@@ -21,6 +21,7 @@
          </div>
          
       {% endfor %}
+      
       <div class="form-group mb-3">
          <div class="g-recaptcha" data-sitekey="6Le_tFwcAAAAALa3ez091kqDf0PS2XeP4YGb8bXJ"></div>
       </div>

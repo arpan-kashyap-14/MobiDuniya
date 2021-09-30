@@ -1,0 +1,167 @@
+{% extends 'app/userBase.html' %}
+{% load static %}
+{% block title %}User Profile{% endblock title %}
+{% block main-content %}
+
+
+<div class="container-fluid user-sec">
+  <div class="row">
+    <div class="col-sm-3 position-fixed p-0"
+      style="background: #333; z-index: 1; box-shadow:4px 4px 4px rgba(0,0,0,0.18); ">
+      <ul class="user-menu" id="user-menu">
+        <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('1');">Basic
+            Info</a></li>
+        <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('2');">Contact
+            Info</a></li>
+        <!-- <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('3');" >Payment
+            Details</a></li> -->
+        <li class="menu-item"><a href="{% url 'showcart' %}" class="w-100 h-100 menu-link" onclick="getData('4');">Cart
+          </a></li>
+        <li class="menu-item"><a href="{% url 'orders' %}" class="w-100 h-100 menu-link" onclick="getData('5');">Track
+            Orders</a></li>
+        <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('6');">Compare
+            Mobiles</a></li>
+        <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('7');">Suggest
+            Mobile</a></li>
+        <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('8');">Help
+            Center</a></li>
+        <li class="menu-item"><a href="{% url 'passwordchange' %}" class="w-100 h-100 menu-link"
+            onclick="getData('9');">Change
+            Password</a></li>
+        <li class="menu-item"><a href="#" class="w-100 h-100 menu-link" onclick="getData('10');">Delete
+            account</a></li>
+        <li class="menu-item"><a href="{% url 'logout' %}" class="w-100 h-100 menu-link"
+            onclick="getData('11');">Logout</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 bg-secondary user-side-content"
+      style="width: 75%; min-height: 100vh; margin-left: auto; background: #333 !important;">
+      <div class="user-container">
+        <div class="user-profile" id="user-content">
+          <div class="basic-info">
+            <div class="imgbx">
+              <img src="{{person.customer_image.url}}" alt="profile-image">
+            </div>
+            <div class="content">
+              <h2>{{person.name}}</h2>
+              <h3>{{person.email}}</h3>
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+  const userContent = document.getElementById("user-content");
+  const userMenu = document.querySelectorAll('#user-menu li a');
+
+  const getData = function (e) {
+
+    switch (e) {
+      case '1':
+        userContent.innerHTML = `
+                  <div class="basic-info">
+                                <div class="imgbx">
+                                    <img src="{{person.customer_image.url}}" alt="profile-image">
+                                </div>
+                                <div class="content">
+                                   <h2>{{person.name}}</h2>
+                                   <h3>{{person.email}}</h3>
+                                </div>
+                             </div>
+
+          `;
+        break;
+      case '2':
+        userContent.innerHTML = ` <div class="contact-info">
+            <table class="table" style="color: #ccc; text-align: center;">
+              <tBody>
+                <tr  class="tb-hover" >
+                  <th>Mobile No.</th>
+                  <td>{{person.phone_no}}</td>
+                </tr>
+
+                <tr  class="tb-hover" >
+                  <th>House No/ Street</th>
+                  <td>{{person.house_no}}</td>
+                </tr>
+                <tr  class="tb-hover" >
+                  <th>Landmark</th>
+                  <td>{{person.landmark}}</td>
+                </tr>
+                <tr  class="tb-hover" >
+                  <th>City</th>
+                  <td>{{person.city}}</td>
+                </tr>
+                <tr  class="tb-hover" >
+                  <th>State</th>
+                  <td>{{person.state}}</td>
+                </tr>
+                <tr  class="tb-hover" >
+                  <th>Pincode</th>
+                  <td>{{person.zipcode}}</td>
+                </tr>
+              </tBody>
+            </table>
+          </div>
+        `;
+        break;
+      case '4':
+        userContent.innerHTML = "";
+        break;
+      case '5':
+        userContent.innerHTML = `
+        <div class="change-password">    
+          </div>`;
+        break;
+      default:
+        console.log("error");
+    }
+
+  }
+
+
+// $(".user-menu li a").on("click",function(){
+
+//    const dataId = $(this).attr("data-id");
+
+//    console.log(dataId); 
+
+//    console.log(typeof(dataId));
+
+//    switch(dataId){
+//        case '1':
+//           userContent.innerHTML = "<h1>{{person.name}}</h1>";
+//           break;
+//        case '2':
+//         userContent.innerHTML = "<h1>{{person.email}}</h1>";
+//         break;
+//         case '3':
+//           userContent.innerHTML = "<h1>Link-3</h1>";
+//           break;
+//        case '4':
+//         userContent.innerHTML = "<h1>Link-4</h1>";
+//         break;
+//         case '5':
+//         userContent.innerHTML = "<h1>Link-4</h1>";
+//         break;
+//        default:
+//          console.log("error"); 
+//    }
+
+
+// });
+
+
+
+</script>
+
+<!-- bootstrap start js -->
+{% endblock main-content %}

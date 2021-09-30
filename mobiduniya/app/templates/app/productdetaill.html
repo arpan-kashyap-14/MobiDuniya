@@ -9,8 +9,8 @@
             <div class="product-img">
                 <!-- <img src="{{product.product_image1.url}}" alt=""> -->
                 <div class="carousel slide" style="height: 100%;" id="pproduct-slider" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
+                    <div class="carousel-inner bg-light box-shade" >
+                        <div class="carousel-item active ">
                             <div class="imgbx" style="height: 400px;">
                                 <img class="d-block w-100" src="{{productt.product_image1.url}}" alt="">
                             </div>
@@ -53,12 +53,31 @@
             </div>
         </div>
         <div class="col-sm-5 offset-sm-1">
-            <h2>Samsung</h2>
-            <h3 class="text-black-50">{{productt.title}}</h3>
-            <hr>
-            <h4 style="font-weight: 700;">&#8377 {{productt.selling_price}}</h4> <br>
-            <a href="{% url 'add-to-cart' %}" class="btn btn-primary shadow px-3 py-2">ADD TO CART</a>
-            <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-3 py-2 ms-4">COMPARE</a>
+            <h1 class="dark-header px-3" style="color: #ccc; text-transform: capitalize;" >{{productt.brand}}</h1>
+            <h3 class="dark-header px-3 my-3" style="color: #ccc; text-transform: capitalize;" >{{productt.title}}</h3>
+            <!-- <hr> -->
+            <h4 style="font-weight: 700; color: #ccc;" class="dark-header px-3"  >&#8377 {{productt.selling_price}}</h4> <br>
+            {% if request.user.is_authenticated %}
+            {% if item_already_in_cart %}
+            <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 ms-4">Go to Cart</a>
+            {% else %}
+            <form action="/add-to-cart" class="d-inline">
+                <input type="hidden" name="prod_id" value="{{productt.id}}" id="prod_id">
+                <button type="submit" class="btn form-btn shadow px-5 py-2"> Add To Cart</button>
+            </form>
+            {% endif %}
+            {% endif %}
+
+            {% if not request.user.is_authenticated %}
+            <form action="/add-to-cart" class="d-inline">
+                <input type="hidden" name="prod_id" value="{{productt.id}}" id="prod_id">
+                <button type="submit" class="btn form-btn shadow px-5 py-2"> Add To Cart</button>
+            </form>
+            {% endif %}
+
+
+            
+            <a href="{% url 'buy-now' %}" class="btn btn-danger form-btn-2 shadow px-3 py-2 ms-4">COMPARE</a>
             <a href="{% url 'buy-now' %}" class="btn shadow px-3 py-2 ms-4" s
                 style="border-radius: 50%; background: chocolate; opacity: 0.8; color: #fff;"><i
                     class="fas fa-microphone"></i></a>
@@ -75,20 +94,19 @@
 
     <div class="row mt-sm-3 mt-lg-5">
         <div class="col-sm-12">
-            <h2 class="text-black-50" style="font-size: 1.8em; text-transform: uppercase;">specifications</h2>
+            <h2 class="dark-header text-center"  style="font-size: 1.8em; text-transform: uppercase; color: cornsilk;">specifications</h2>
         </div>
     </div>
     <div class="row mt-sm-3 mt-lg-4">
         <div class="col-sm-12">
-            <h3>General</h3>
             <table class="table table-bordered table-light shadow">
-                <!-- <tHead>
-                    <tr>
-                        <th></th>
-                        <th></th>
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">General</th>
+                        
                     </tr>
-                </tHead> -->
-                <tBody class="text-black-50">
+                </tHead>
+                <tBody class="text-black">
                     <tr>
                         <td>Brand</td>
                         <td>{{productt.brand}}</td>
@@ -126,6 +144,25 @@
                         <td>{{productt.battery}}</td>
                     </tr>
 
+
+
+
+                </tBody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">Display</th>
+                        
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
+
                     <tr>
                         <td>Display</td>
                         <td>{{productt.display}}</td>
@@ -150,6 +187,21 @@
                         <td>Refresh Rate</td>
                         <td>{{productt.refresh_rate}}</td>
                     </tr>
+                </tBody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">Hardware</th>
+                        
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
 
                     <tr>
                         <td>Processor</td>
@@ -175,6 +227,21 @@
                         <td>Expandable Storage type</td>
                         <td>microSD</td>
                     </tr>
+                </tBody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">Camera</th>
+                        
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
 
                     <tr>
                         <td>Rear Camera</td>
@@ -191,12 +258,42 @@
                         <td>{{productt.front_camera}}</td>
                     </tr>
 
+                </tBody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">Software</th>
+                        
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
 
                     <tr>
                         <td>Operating System</td>
                         <td>{{productt.os}}</td>
                     </tr>
 
+
+                </tBody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">Connectivity</th>
+                        
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
                     <tr>
                         <td>Wi-Fi</td>
                         <td>Yes</td>
@@ -237,221 +334,22 @@
                         <td>2</td>
                     </tr>
 
-                    <tr>
-                        <td>Face Unlock</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>FingerPrint</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Compass/Magnetometer</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Promixity Sensor</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Accelerometer</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Ambient Light Sensor</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Gyroscope</td>
-                        <td>Yes</td>
-                    </tr>
-
-
-
-
-
-
-
                 </tBody>
             </table>
         </div>
     </div>
     <div class="row mt-sm-3 mt-lg-4">
         <div class="col-sm-12">
-            <h3>Display</h3>
-            <table class="table table-bordered table-light shadow">
-               
-                <tBody class="text-black-50"> 
+            
+            <table class="table table-bordered table-light shadow ">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="2">Sensors</th>
+                        
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
 
-                    <tr>
-                        <td>Display</td>
-                        <td>{{productt.display}}</td>
-                    </tr>
-
-                    <tr>
-                        <td>TouchScreen</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Resolution</td>
-                        <td>{{productt.resolution}} px</td>
-                    </tr>
-
-                    <tr>
-                        <td>Aspect Ratio</td>
-                        <td>{{productt.screen_to_body_ratio}}</td>
-                    </tr>
-
-                    <tr>
-                        <td>Refresh Rate</td>
-                        <td>{{productt.refresh_rate}}</td>
-                    </tr>
-                </tBody> 
-            </table>
-        </div>
-    </div>
-    <div class="row mt-sm-3 mt-lg-4">
-        <div class="col-sm-12">
-            <h3>Hardware</h3>
-            <table class="table table-bordered table-light shadow">
-                
-                  <tBody class="text-black-50">  
-                   
-                    <tr>
-                        <td>Processor</td>
-                        <td>{{productt.processor}}</td>
-                    </tr>
-
-                    <tr>
-                        <td>RAM</td>
-                        <td>{{productt.ram}}GB</td>
-                    </tr>
-
-                    <tr>
-                        <td>Internal Storage</td>
-                        <td>{{productt.internal}}GB</td>
-                    </tr>
-
-                    <tr>
-                        <td>Expandable Storage</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Expandable Storage type</td>
-                        <td>microSD</td>
-                    </tr>
-                </tBody> 
-            </table>
-        </div>
-    </div>
-    <div class="row mt-sm-3 mt-lg-4">
-        <div class="col-sm-12">
-            <h3>Camera</h3>
-            <table class="table table-bordered table-light shadow">
-              
-                 <tBody class="text-black-50">
-                   
-                    <tr>
-                        <td>Rear Camera</td>
-                        <td>{{productt.rear_camera}}</td>
-                    </tr>
-
-                    <tr>
-                        <td>Rear Flash</td>
-                        <td>dual LED</td>
-                    </tr>
-
-                    <tr>
-                        <td>Front Camera</td>
-                        <td>{{productt.front_camera}}</td>
-                    </tr>
-
-                </tBody> 
-            </table>
-        </div>
-    </div>
-    <div class="row mt-sm-3 mt-lg-4">
-        <div class="col-sm-12">
-            <h3>Software</h3>
-            <table class="table table-bordered table-light shadow">
-               
-                 <tBody class="text-black-50">
-                   
-                    <tr>
-                        <td>Operating System</td>
-                        <td>{{productt.os}}</td>
-                    </tr>
-
-                   
-                </tBody> 
-            </table>
-        </div>
-    </div>
-    <div class="row mt-sm-3 mt-lg-4">
-        <div class="col-sm-12">
-            <h3>Connectivity</h3>
-            <table class="table table-bordered table-light shadow">
-                
-                 <tBody class="text-black-50">
-                   <tr>
-                    <td>Wi-Fi</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>GPS</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Bluetooth</td>
-                        <td>Yes,{{productt.bluetooth}}</td>
-                    </tr>
-
-                    <tr>
-                        <td>USB OTG</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Headphones</td>
-                        <td>{{productt.earphone}}</td>
-                    </tr>
-
-                    <tr>
-                        <td>Microphone</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>FM</td>
-                        <td>Yes</td>
-                    </tr>
-
-                    <tr>
-                        <td>Number of SIMs</td>
-                        <td>2</td>
-                    </tr>
-
-                </tBody> 
-            </table>
-        </div>
-    </div>
-    <div class="row mt-sm-3 mt-lg-4">
-        <div class="col-sm-12">
-            <h3>Sensors</h3>
-            <table class="table table-bordered table-light shadow">
-               
-                 <tBody class="text-black-50">
-                   
                     <tr>
                         <td>Face Unlock</td>
                         <td>Yes</td>
@@ -486,7 +384,7 @@
                         <td>Gyroscope</td>
                         <td>Yes</td>
                     </tr>
-                </tBody> 
+                </tBody>
             </table>
         </div>
     </div>

@@ -2,10 +2,13 @@
 {% load static %}
 {% block title %}Buy Now{% endblock title %}
 {% block main-content %}
+<div class="container-fluid product-detail m-0 p-0" style="width: 100%; min-height: 100vh; background: #333; overflow: hidden;" >
+
 <div class="container" style="margin-top: 90px;">
  <div class="row">
-  <div class="col-sm-3">
-   <div class="list-group">
+  <div class="col-sm-3 product-menu">
+      <h3 class="dark-header" style="color: #ccc; text-align: center; margin:30px 0;" >Oneplus</h3>  
+   <div class="list-group bg-glass product-menu-list">
        <a href="{% url 'oneplus' %}" class="list-group-item list-group-item-action" aria-current="true">All Mobiles</a>
        <a href="{% url 'oneplusdata' 'below' %}" class="list-group-item list-group-item-action">Below 20000</a>
        <a href="{% url 'oneplusdata' 'above' %}" class="list-group-item list-group-item-action">Above 20000</a>
@@ -14,10 +17,13 @@
   <div class="col-sm-8 offset-sm-1">
    <div class="row">
        {% for product in oneplus %}
-         <div class="col-sm-4 text-center mb-4">
+         <div class="col-sm-3 text-center mb-4 product-card">
              <a href="{% url 'product-detail' product.id %}" class="btn">
              <div class="item">
-                 <img src="{{product.product_image1.url}}" alt="" height="300" class="">
+                 <div class="imgbx" >
+
+                     <img src="{{product.product_image1.url}}" alt="" height="300" class="">
+                 </div>
                  <div class="fw-bold">{{product.title}}</div>
                  <div class="fw-bold">Rs. {{product.selling_price}}</div>
              </div>

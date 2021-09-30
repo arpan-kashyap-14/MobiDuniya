@@ -19,12 +19,21 @@
 
   <!--Custom CSS-->
   <link rel="stylesheet" href="{% static 'app/css/stylee.css' %}">
+  <link rel="stylesheet" href="{% static 'app/css/user.css' %}">
 
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
   <script src='https://www.google.com/recaptcha/api.js' async defer></script>
   <title>MobiDuniya | {% block title %} {% endblock title %} </title>
 </head>
+<style>
+  body{
+    background: #333;
+  }
+  
+  
+</style>
+
 <style>
   .swiper-container {
     width: 100%;
@@ -47,9 +56,6 @@
     filter: blur(0);
     background: #fff;
   }
-</style>
-
-<style>
   .swiper {
     width: 240px;
     height: 320px;
@@ -259,12 +265,13 @@
   }
 
   .dropdown-menu {
-    background: #000 !important;
-    border: 2px groove #ffc107;
+    background: #2d2d2d !important;
+    /* border: 2px groove #ffc107; */
   }
 
+  .btn-hov:hover,
   .dropdown-menu li a:hover {
-    background: #ffc107 !important;
+    background: #2196f3 !important;
   }
 
   .dropdown-menu li a {
@@ -286,16 +293,17 @@
     /* border-bottom: 2px solid #ccc; */
     outline: none !important;
     box-shadow: none !important;
-    border-radius: 0 !important;
+    border-radius: 4px !important;
     margin: 4px 0;
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 300;
-    transition: all 1s ease;
+    transition: all 0.3s ease;
   }
 
   .input-style:focus {
-    border-bottom: 2px solid #3c1053 !important;
+    /* border: 2px solid #3c1053 !important; */
+    border: 2px solid #677eff !important;
   }
 
   input[type="submit"] {
@@ -307,6 +315,15 @@
     text-transform: uppercase;
     transition: 0.5s;
   }
+
+  .otp-btn{
+     font-size: 0.8rem;
+     text-decoration: none;
+  }
+
+   .otp-btn:hover{
+     text-decoration: none;
+   }
 
   @media (max-width:448px) {
     .sec-content {
@@ -330,6 +347,7 @@
 </style>
 
 <body>
+
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
     <div class="container" style="width: 100%">
       <a class="navbar-brand" href="/"><img src="{% static 'app/images/banner/logo1-removebg-preview.png' %}" width="50"
@@ -344,21 +362,22 @@
           <!-- <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li> -->
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown home-card btn-hov">
             <a class="nav-link dropdown-toggle text-white" href="#" id="electronicsDropdown" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               Mobiles
             </a>
-            <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
+            <ul class="dropdown-menu home-card" style="background: #2d2d2d;" aria-labelledby="electronicsDropdown">
               <li><a class="dropdown-item" href="{% url 'samsung' %}">Samsung</a></li>
               <li><a class="dropdown-item" href="{% url 'vivo' %}">Vivo</a></li>
               <li><a class="dropdown-item" href="{% url 'oppo' %}">Oppo</a></li>
-              <li><a class="dropdown-item" href="{% url 'mi' %}">MI</a></li>
+              <li><a class="dropdown-item" href="{% url 'mi' %}">Xiaomi</a></li>
               <li><a class="dropdown-item" href="{% url 'realme' %}">Realme</a></li>
               <li><a class="dropdown-item" href="{% url 'oneplus' %}">OnePlus</a></li>
             </ul>
+
           </li>
-          <div class="nav-item mx-2 ">
+          <div class="nav-item mx-2">
 
             <form class="d-flex">
               <input class="form-control" type="search" placeholder="Search" aria-label="Search">
@@ -380,10 +399,17 @@
         <div>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if request.user.is_authenticated %}
-            <li class="nav-item dropdown mx-2">
-              <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button"
+            
+            <li class="nav-item mx-2"   >
+              <a href="{% url 'dashboard' %}" id="user-name"  class="nav-link text-white home-card btn-hov" style="padding: 10px 20px;"     >
+                {{request.user.username|capfirst}}
+              </a>
+            </li>
+
+            <!-- <li class="nav-item dropdown mx-2">
+              <a class="nav-link dropdown-toggle text-white" href="{% url 'dashboard' %}" id="profileDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                Sonam
+                {{request.user.username|capfirst}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
@@ -391,11 +417,13 @@
                 <li><a class="dropdown-item" href="{% url 'passwordchange' %}">Change Password</a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
               </ul>
-            </li>
-            <li class="nav-item mx-2">
-              <a href="{% url 'add-to-cart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart
+            </li> -->
+
+            <!-- <li class="nav-item mx-2">
+              <a href="{% url 'showcart' %}" class="nav-link text-white"><span class="badge bg-danger"></span> Cart
               </a>
-            </li>
+            </li> -->
+
             {% else %}
             <li class="nav-item mx-2">
               <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
@@ -414,7 +442,7 @@
   {% block main-content %} {% endblock main-content %}
 
   <!-- Start Footer -->
-  <footer class="container-fluid bg-dark text-center p-2 mt-5 sec-3">
+  <footer class="container-fluid bg-dark text-center p-2 sec-3">
     <!-- <small class="text-white">Copyright &copy; 2021 || Designed By GeekyShows || </small>
     <img src="{% static 'app/images/payment.png' %}" alt="" srcset="" class="img-fluid" height="2px"> -->
     <div class="sec-content d-flex justify-content-center align-items-center">
@@ -433,7 +461,21 @@
 
                   <div class="about-card">
                     <div class="imgbx">
-                      <img src="{% static 'app/images/christian.jpg' %}" class="img-fluid" alt="">
+                      <img src="{% static 'app/images/arpan.jpg' %}" class="img-fluid" alt="">
+                    </div>
+                    <br>
+                    <div class="content text-center">
+                      <h4 class="text-muted">Arpan Kashyap</h4>
+                      <h5 class="text-black-50" style="font-size: 12px;">arpankashyap2000@gmail.com</h2>
+                        <h5 class="text-black-50" style="font-size: 12px;">Software Developer</h5>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="swiper-slide">
+                  <div class="about-card">
+                    <div class="imgbx">
+                      <img src="{% static 'app/images/ankit.jpeg' %}" class="img-fluid"  alt="">
                     </div>
                     <br>
                     <div class="content text-center">
@@ -442,32 +484,18 @@
                         <h5 class="text-black-50" style="font-size: 12px;">MERN Stack Developer</h5>
                     </div>
                   </div>
-
-                </div>
-                <div class="swiper-slide">
-                  <div class="about-card">
-                    <div class="imgbx">
-                      <img src="{% static 'app/images/christian.jpg' %}" class="img-fluid" alt="">
-                    </div>
-                    <br>
-                    <div class="content text-center">
-                      <h4 class="text-muted">Ankit Patel</h4>
-                      <h5 class="text-black-50" style="font-size: 12px;">ankit@gmail.com</h2>
-                        <h5 class="text-black-50" style="font-size: 12px;">MERN Stack Developer</h5>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="swiper-slide">
                   <div class="about-card">
                     <div class="imgbx">
-                      <img src="{% static 'app/images/christian.jpg' %}" class="img-fluid" alt="">
+                      <img src="{% static 'app/images/Pic (2).jpg' %}" class="img-fluid" alt="">
                     </div>
                     <br>
                     <div class="content text-center">
-                      <h4 class="text-muted">Ankit Patel</h4>
-                      <h5 class="text-black-50" style="font-size: 12px;">ankit@gmail.com</h2>
-                        <h5 class="text-black-50" style="font-size: 12px;">MERN Stack Developer</h5>
+                      <h4 class="text-muted">Armaan Agrawal</h4>
+                      <h5 class="text-black-50" style="font-size: 12px;">armngrwl1299@gmail.com</h2>
+                        <h5 class="text-black-50" style="font-size: 12px;">Software Developer</h5>
                     </div>
                   </div>
                 </div>
@@ -505,8 +533,7 @@
 
         <div class="row footer w-100 p-0 m-0">
           <div class="col-sm-12">
-            <p class="text-white">copyright 2021 &copy; Theme Created By Armaan Agrawal,Ankit Patel,Arpan Kashyap,All
-              Rights Reserved</p>
+            <p class="text-white">Copyright 2021 © Theme Created By Armaan Agrawal, Ankit Patel, Arpan Kashyap All Rights Reserved</p>
           </div>
         </div>
       </div>

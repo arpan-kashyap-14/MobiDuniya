@@ -2,37 +2,43 @@
 {% load static %}
 {% block title %}Buy Now{% endblock title %}
 {% block main-content %}
-<div class="container">
- <div class="row mt-5">
+<div class="container" style="margin-top: 90px;">
+ <div class="row py-5">
   <div class="col-sm-6">
-    <h4>Order Summary</h4>
+    <h4 class="dark-header-1 text-center" style="color: #ccc; padding: 5px 0;" >Order Summary</h4>
     <hr>
-      <div class="card mb-2">
+    
+    {% for item in cart_item %}
+      <div class="card mb-2 home-card" style="color: #ccc;">
         <div class="card-body">
-          <h5>Product: Product 1</h5>
-          <p>Quantity: 2</p>
-          <p class="fw-bold">Price: 100.00</p>
+          <h5>Product: {{item.product.title}}</h5>
+          <p>Quantity: {{item.quantity}}</p>
+          <p class="fw-bold">Price: {{item.total_cost}}</p>
         </div>
       </div>
-    <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem. Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil in et quis?</small>
+      {% endfor %}
+
+      <p class="fw-bold dark-header-1" style="color: #ccc; padding: 5px 10px; font-size: 1.2em;">Amount Paid: &#8377 {{totalamount}}</p>
   </div>
   <div class="col-sm-4 offset-sm-1">
-    <h4>Select Shipping Address</h4>
+    <h4 class="dark-header-1 text-center" style="color: #ccc;" >Select Shipping Address</h4>
     <hr>
-    <form action="">
-      <div class="card">
+    <form action="/paymentdone">
+      {% for ad in add %}
+      <div class="card home-card" style="background:#ccc;">
         <div class="card-body">
-        <h5>Sonam Kumari</h5>
-        <p>Hirapur Dhanbad Jharkahnd</p>
+        <h5>{{ad.name}}</h5>
+        <p>{{ad.landmark}},{{ad.city}},{{ad.state}} - {{ad.zipcode}}</p>
         </div>
       </div>
         <div class="form-check mt-2 mb-5">
-          <input class="form-check-input" type="radio" value="">
-          <label class="form-check-label fw-bold" for="">
-            Address: 1 </label>
+          <input class="form-check-input" type="radio" value="{{ad.id}}" name="custid" id="custadd{{forloop.counter}}">
+          <label class="form-check-label fw-bold" style="color: #ccc;" for="custadd{{forloop.counter}}">
+            Address: {{forloop.counter}} </label>
         </div>
+        {% endfor %}
         <div class="text-end">
-          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+          <button type="submit" class="btn  form-btn mt-3 px-5 fw-bold">Continue</button>
         </div>
       </form>
     </div>
