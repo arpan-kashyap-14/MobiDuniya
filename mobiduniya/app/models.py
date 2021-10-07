@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator,MinValueValidator
 from django.db.models.deletion import CASCADE
+from django.conf import settings
 
 STATE_CHOICES=(
     ('Andaman & Nicobar Islands','Andaman & Nicobar Islands'),
@@ -64,14 +65,14 @@ class Person(models.Model):
     city=models.CharField(max_length=20,blank=True,null=True)
     zipcode=models.IntegerField(blank=True,null=True)
     state=models.CharField(choices=STATE_CHOICES,max_length=50,blank=True,null=True)
-    is_seller=models.BooleanField(blank=True,null=True)
+    # is_seller=models.BooleanField(blank=True,null=True)
     email_verified=models.BooleanField(blank=True,null=True)
     phone_no_verified=models.BooleanField(blank=True,null=True)
-    card_type=models.CharField(choices=CARD_CHOICES,max_length=20,blank=True,null=True)
-    card_no=models.CharField(max_length=16,blank=True,null=True)
-    card_holder=models.CharField(max_length=30,blank=True,null=True)
-    valid_from=models.DateField(blank=True,null=True)
-    valid_through=models.DateField(blank=True,null=True)
+    # card_type=models.CharField(choices=CARD_CHOICES,max_length=20,blank=True,null=True)
+    # card_no=models.CharField(max_length=16,blank=True,null=True)
+    # card_holder=models.CharField(max_length=30,blank=True,null=True)
+    # valid_from=models.DateField(blank=True,null=True)
+    # valid_through=models.DateField(blank=True,null=True)
 
 
     def __str__(self):
@@ -154,5 +155,6 @@ class OrderPlaced(models.Model):
 
     @property
     def total_cost(self):
-        return self.quantity * self.product.selling_price        
+        return self.quantity * self.product.selling_price 
+
         

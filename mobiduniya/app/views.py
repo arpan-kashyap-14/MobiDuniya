@@ -7,8 +7,23 @@ from .forms import CustomerRegistrationForm,CustomerProfileForm
 from django.contrib import messages
 from app import forms
 from django.db.models import Q
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+import speech_recognition
+from django.core import serializers
+import pyttsx3
+
+# output audio
+def outputAudio(output_text):
+    engine=pyttsx3.init("sapi5")
+    voices=engine.getProperty("voices")
+    engine.setProperty("voice",voices[1].id)
+    engine.setProperty("volume",1.0)
+    engine.setProperty("rate",200)
+    engine.say(output_text)
+    engine.runAndWait()
 # def home(request):
 #  return render(request, 'app/home.html')
 
@@ -228,6 +243,81 @@ def oneplus(request,data=None):
 
 # def login(request):
 #  return render(request, 'app/login.html')
+@login_required
+def compare(request):
+    return render(request,'app/compare.html')
+
+@login_required
+def getproduct(request):
+    if request.method == 'GET':
+        brand_name=request.GET['brandName']
+        data = Product.objects.filter(brand=brand_name)
+        ls = []
+        for x in data:
+             ls.append([x.id,x.title])
+        responsedata = ls    
+        return JsonResponse({"responsedata":responsedata})
+
+@login_required
+def getfeatures(request):
+    productId_1 = request.GET['product_id_1']
+    productId_2 = request.GET['product_id_2']
+    ls1 = []
+    print(productId_1,productId_2)
+    productData1 = Product.objects.filter(id = productId_1)
+    productData2 = Product.objects.filter(id = productId_2)
+    for x,y in zip(productData1,productData2):
+        ls1.append([x.brand,y.brand])
+        ls1.append([x.title,y.title])
+        ls1.append([x.selling_price,y.selling_price])
+        ls1.append([x.body_length,y.body_length])
+        ls1.append([x.body_width,y.body_width])
+        ls1.append([x.body_weight,y.body_weight])
+        ls1.append([x.battery,y.battery])
+        ls1.append([x.display,y.display])
+        ls1.append([x.resolution,y.resolution])
+        ls1.append([x.screen_to_body_ratio,y.screen_to_body_ratio])
+        ls1.append([x.refresh_rate,y.refresh_rate])
+        ls1.append([x.processor,y.processor])
+        ls1.append([x.ram,y.ram])
+        ls1.append([x.internal,y.internal])
+        ls1.append([x.rear_camera,y.rear_camera])
+        ls1.append([x.front_camera,y.front_camera])
+        ls1.append([x.os,y.os])
+
+
+
+                      
+    # print(list(productData2)) 
+    return JsonResponse({
+        "productId_1":productId_1,
+        "productId_2":productId_2,
+        "productData":ls1      
+    }) 
+
+def compareshowproducts(request):
+    if request.method == 'GET':
+        id=request.GET['id']
+        data = Product.objects.filter(id=id)
+        ls = []
+        
+        for x in data:
+            ls.append(x.selling_price)
+            ls.append(x.battery)
+            ls.append(x.ram)
+            ls.append(x.rear_camera)
+            ls.append(x.front_camera)
+            ls.append(str(x.product_image1))
+            ls.append(str(x.product_image2))
+            ls.append(str(x.product_image3))
+            ls.append(str(x.product_image4))
+            ls.append(str(x.product_image5))
+
+        print(ls)    
+            
+        return JsonResponse({"responseData":ls} )
+
+
 
 class CustomerRegistrationView(View):
     def get(self,request):
@@ -237,6 +327,7 @@ class CustomerRegistrationView(View):
         form = CustomerRegistrationForm(request.POST)  
         if form.is_valid():
             messages.success(request,'Congratulations!! Registered Successfully')
+            outputAudio("Registered Successfully") 
             form.save()
             return redirect('/accounts/login/') 
               
@@ -311,16 +402,20 @@ class ProfileView(View):
 
             obj.save()
             messages.success(request,'Congratulations!! Profile Updated Successfully')
+            outputAudio("Profile Updated Successfully") 
+            return redirect('/')
 
         return render(request,'app/profile.html',{'form':form,'active':'btn-primary'}) 
 
 def dashboard(request):
     user=request.user
-
     per=Person.objects.get(user=user)
+    outputAudio("Welcome to the Dashboard")
     return render(request,'app/user.html',{'person':per}); 
 
 
 # def getDashboard(request):
 #     JsonResponse(data)
+
+
     

@@ -9,7 +9,7 @@ from .models import (
 )
 @admin.register(Person)
 class PersonModelAdmin(admin.ModelAdmin):
-    list_display=['id','user','email','name','phone_no','customer_image','landmark','city','zipcode','state','is_seller','email_verified','phone_no_verified','card_type','card_no','card_holder','valid_from','valid_through']
+    list_display=['id','user','email','name','phone_no','customer_image','landmark','city','zipcode','state','email_verified','phone_no_verified']
 
 @admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):

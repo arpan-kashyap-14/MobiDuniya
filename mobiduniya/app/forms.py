@@ -55,5 +55,6 @@ class CustomerProfileForm(forms.ModelForm):
                 #  'valid_from':forms.DateInput(attrs={'class':'form-control'}),
                 #  'valid_through':forms.DateInput(attrs={'class':'form-control'})
                  }
+              
 
         
