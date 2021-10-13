@@ -96,7 +96,27 @@ $('.remove-cart').click(function () {
 
 const getProducts = () => {
     const val = $('#brand1').val()
+    
+    if(val == ""){
+        $("#message").html("")
+        $("#message").attr("class","");
+        $("#message").attr("style","color:#ccc;");
+        $("#product-features").html(`
+        <div class="alert alert-success my-2 text-center">Please Select the products to compare</div>
+        `)
+        const compareBtn = document.getElementById("compare-btn");
+            compareBtn.style.boxShadow = "none";
+            const product1 = document.getElementById('product1')
+            product1.innerHTML = '<option value="">Select The Product</option>'
+            const product1Carousel = document.getElementById("product1-carousel");
+    product1Carousel.innerHTML = ''
+
+        
+        return;
+    }
+
     const product1 = document.getElementById('product1')
+
     product1.innerHTML = '<option value="">Select the product</option>'
     $.ajax({
         type: 'GET',
@@ -104,7 +124,7 @@ const getProducts = () => {
         contentType: 'application/json',
         data: { brandName: val },
         success: function (data) {
-
+            
             data.responsedata.map((item) => {
                 product1.innerHTML += `
                  <option value="${item[0]}">${item[1]}</option>
@@ -124,6 +144,25 @@ const getProducts = () => {
 
 const getProductsTwo = () => {
     const val = $('#brand2').val()
+
+    if(val == ""){
+        $("#message").html("")
+        $("#message").attr("class","");
+        $("#message").attr("style","color:#ccc;"); 
+        $("#product-features").html(`
+        <div class="alert alert-success my-2 text-center">Please Select the products to compare</div>
+        `)
+        const compareBtn = document.getElementById("compare-btn");
+            compareBtn.style.boxShadow = "none";
+            const product2 = document.getElementById('product2')
+    product2.innerHTML = '<option value="">Select The Product</option>'
+    const product2Carousel = document.getElementById("product2-carousel");
+    product2Carousel.innerHTML = ''
+
+
+        return;
+    }
+
     const product2 = document.getElementById('product2')
     product2.innerHTML = '<option value="">Select The Product</option>'
     $.ajax({
@@ -267,12 +306,7 @@ const suggestPhone = () =>{
    const rear2 = $("#rear2").text().split(" ")[0];
 
 
-// console.log('price',price1,price2)
-// console.log('battery',battery1,battery2)
-// console.log('ram',ram1,ram2)
-// console.log('rom',rom1,rom2)
-// console.log('front',front1,front2)
-// console.log('rear',rear1,rear2)
+
 let product1 = 0;
 let product2 = 0;
 
@@ -390,7 +424,7 @@ const showFeatures = () => {
     renderProduct.innerHTML = " ";
 
 
-    if (setProduct1 && setProduct2) {
+    if (setProduct1 || setProduct2) {
 
         console.log(productId1)
         console.log(productId2)
@@ -820,6 +854,515 @@ const showFeatures = () => {
 }
 
 
+// second compare page 
+
+const showFeaturesView = () => {
+    const compareBtn = document.getElementById("compare-btn");
+    compareBtn.style.boxShadow = "4px 4px 20px #fff";
+    const renderProduct = document.getElementById("product-features");
+    const productId1 = $("#product1").val()
+    const productId2 = $("#product2").val()
+
+    renderProduct.innerHTML = " ";
+    if (setProduct2) {
+       
+         console.log('product1',productId1)
+         console.log(productId2)
+
+        $.ajax({
+            type: "GET",
+            url: "/compare/getFeatures",
+            contentType: "application/json",
+            data: {
+                product_id_1: productId1,
+                product_id_2: productId2
+            },
+            success: function (data) {
+                console.log(data.productData)
+                if (data) {
+                    const general = data.productData.slice(0, 7)
+                    const display = data.productData.slice(7, 11)
+                    const hardware = data.productData.slice(11, 14)
+                    const camera = data.productData.slice(14, 16)
+                    
+
+                        renderProduct.innerHTML += `
+                        <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="3">General</th>
+                        
+                    </tr>
+                    <tr>
+                        <th>Features</th>
+                        <th>${general[0][0]} ${general[1][0]}</th>
+                        <th>${general[0][1]} ${general[1][1]}</th>
+                    </tr>
+                </tHead>
+
+                <tBody class="text-black">
+                    <tr>
+                        <td>Brand</td>
+                        <td id="brrand1" >${general[0][0]}</td>
+                        <td id="brrand2">${general[0][1]}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Model</td>
+                        <td id="modal1">${general[1][0]}</td>
+                        <td id="modal2">${general[1][1]}</td>
+                    
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td id="price1"   >Rs. ${general[2][0]}</td>
+                        <td id="price2" >Rs. ${general[2][1]}</td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td>Launch in India</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+
+                    </tr>
+                    <tr>
+                        <td>Form Factor</td>
+                        <td>Touch Screen</td>
+                        <td>Touch Screen</td>
+
+                    </tr>
+                    <tr>
+                        <td>Body Length</td>
+                        <td>${general[3][0]}</td>
+                        <td>${general[3][1]}</td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td>Body Width</td>
+                        <td>${general[4][0]}</td>
+                        <td>${general[4][1]}</td>
+                
+
+                    </tr>
+                    <tr>
+                        <td>Body Weight</td>
+                        <td>${general[5][0]}</td>
+                        <td>${general[5][1]}</td>
+                    </tr>
+                    <tr>
+                        <td>Battery</td>
+                        <td id="battery1" >${general[6][0]}</td>
+                        <td id="battery2" >${general[6][1]}</td>
+                    </tr>
+
+                </tBody>
+
+            </table>
+        </div>
+                        </div>`
+
+                        renderProduct.innerHTML += `
+                        <div class="row mt-sm-3 mt-lg-4">
+                        <div class="col-sm-12">
+                            
+                            <table class="table table-bordered table-light shadow">
+                                <tHead >
+                                    <tr class="table-dark">
+                                        <th colspan="3">Display</th>
+                                        
+                                    </tr>
+                                    <tr>
+                                    <th>Features</th>
+                                    <th>${general[0][0]} ${general[1][0]}</th>
+                                    <th>${general[0][1]} ${general[1][1]}</th>
+                                    </tr>
+                                </tHead>
+                                <tBody class="text-black">
+
+                                    <tr>
+                                        <td>Display</td>
+                                        <td>${display[0][0]}</td>
+                                        <td>${display[0][1]}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>TouchScreen</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Resolution</td>
+                                        <td>${display[1][0]} px</td>
+                                        <td>${display[1][1]}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Aspect Ratio</td>
+                                        <td>${display[2][0]}</td>
+                                        <td>${display[2][1]}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Refresh Rate</td>
+                                        <td>${display[3][0]}</td>
+                                        <td>${display[3][1]}</td>
+                                    </tr>
+                                </tBody>
+                            </table>
+                        </div>
+                        </div>`
+
+                        renderProduct.innerHTML +=`
+                        <div class="row mt-sm-3 mt-lg-4">
+                                <div class="col-sm-12">
+                                    
+                                    <table class="table table-bordered table-light shadow">
+                                        <tHead >
+                                            <tr class="table-dark">
+                                                <th colspan="3">Hardware</th>
+                                                
+                                            </tr>
+                                            <tr>
+                                            <th>Features</th>
+                                            <th>${general[0][0]} ${general[1][0]}</th>
+                                            <th>${general[0][1]} ${general[1][1]}</th>
+                                            </tr>
+                                        </tHead>
+                                        <tBody class="text-black">
+
+                                            <tr>
+                                                <td>Processor</td>
+                                                <td>${hardware[0][0]}</td>
+                                                <td>${hardware[0][1]}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>RAM</td>
+                                                <td id="ram1" >${hardware[1][0]} GB</td>
+                                                <td id="ram2" >${hardware[1][1]} GB</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Internal Storage</td>
+                                                <td id="rom1" >${hardware[2][0]} GB</td>
+                                                <td id="rom2">${hardware[2][1]} GB</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Expandable Storage</td>
+                                                <td>Yes</td>
+                                                <td>Yes</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Expandable Storage type</td>
+                                                <td>microSD</td>
+                                                <td>microSD</td>
+                                            </tr>
+                                        </tBody>
+                                    </table>
+                                </div>
+                            </div>
+                        `
+                        renderProduct.innerHTML += `
+                        <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="3">Camera</th>
+                        
+                    </tr>
+                    <tr>
+                    <th>Features</th>
+                        <th>${general[0][0]} ${general[1][0]}</th>
+                        <th>${general[0][1]} ${general[1][1]}</th>
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
+
+                    <tr>
+                        <td>Rear Camera</td>
+                        <td id="rear1" >${camera[0][0]}</td>
+                        <td id="rear2">${camera[0][1]}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Rear Flash</td>
+                        <td>dual LED</td>
+                        <td>dual LED</td>
+                    </tr>
+
+                    <tr>
+                        <td>Front Camera</td>
+                        <td id="front1" >${camera[1][0]}</td>
+                        <td id="front2" >${camera[1][1]}</td>
+                    </tr>
+
+                </tBody>
+            </table>
+        </div>
+    </div>
+                        `
+                         
+                        renderProduct.innerHTML += `
+                        <div class="row mt-sm-3 mt-lg-4">
+        <div class="col-sm-12">
+            
+            <table class="table table-bordered table-light shadow">
+                <tHead >
+                    <tr class="table-dark">
+                        <th colspan="3">Software</th>
+                        
+                    </tr>
+                    <tr>
+                    <th>Features</th>
+                        <th>${general[0][0]} ${general[1][0]}</th>
+                        <th>${general[0][1]} ${general[1][1]}</th>
+                    </tr>
+                </tHead>
+                <tBody class="text-black">
+
+                    <tr>
+                        <td>Operating System</td>
+                        <td>${data.productData[16][0]}</td>
+                        <td>${data.productData[16][1]}</td>
+                    </tr>
+                </tBody>
+            </table>
+        </div>
+    </div>
+                        `
+                                
+                        renderProduct.innerHTML += `
+                        <div class="row mt-sm-3 mt-lg-4">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-light shadow">
+                                <tHead >
+                                    <tr class="table-dark">
+                                        <th colspan="3">Connectivity</th>
+                                        
+                                    </tr>
+                                    <tr>
+                                    <th>Features</th>
+                        <th>${general[0][0]} ${general[1][0]}</th>
+                        <th>${general[0][1]} ${general[1][1]}</th>
+                                    </tr>
+                                </tHead>
+                                <tBody class="text-black">
+                                    <tr>
+                                        <td>Wi-Fi</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>GPS</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Bluetooth</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>USB OTG</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Headphones</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Microphone</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>FM</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Number of SIMs</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                    </tr>
+                
+                                </tBody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-sm-3 mt-lg-4">
+                        <div class="col-sm-12">
+                            
+                            <table class="table table-bordered table-light shadow ">
+                                <tHead >
+                                    <tr class="table-dark">
+                                        <th colspan="3">Sensors</th>
+                                        
+                                    </tr>
+                                    <tr>
+                                    <th>Features</th>
+                                    <th>${general[0][0]} ${general[1][0]}</th>
+                                    <th>${general[0][1]} ${general[1][1]}</th>
+                                    </tr>
+                                </tHead>
+                                <tBody class="text-black">
+                
+                                    <tr>
+                                        <td>Face Unlock</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>FingerPrint</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Compass/Magnetometer</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Promixity Sensor</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Accelerometer</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Ambient Light Sensor</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                
+                                    <tr>
+                                        <td>Gyroscope</td>
+                                        <td>Yes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                </tBody>
+                            </table>
+                        </div>
+                    </div>
+                        `
+
+                 suggestPhone();  
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
 
 
 
+    } else {
+        alert("please select product")
+    }
+
+
+
+
+
+}
+
+// second compare page 
+
+
+// suggest page ajax
+const suggestPhones = () =>{
+     
+
+    const brand = {
+        vivo: $('#check-vivo').is(":checked") ? true : false,
+        oppo: $('#check-oppo').is(":checked") ? true : false,
+        samsung: $('#check-samsung').is(":checked") ? true : false,
+        realme: $('#check-realme').is(":checked") ? true : false,
+        xiaomi: $('#check-xiaomi').is(":checked") ? true : false,
+        oneplus: $('#check-oneplus').is(":checked") ? true : false,
+    }
+
+    const productObj ={
+     ...brand,   
+     price : $("#sprice").val(),
+     ram : $("#sram").val(),
+     rom : $("#srom").val(),
+     display : $("#sdisplay").val(),
+     processor : $("#sprocessor").val(),
+     front_camera : $("#sfrontCamera").val().split(' ')[0],
+     rear_camera : $("#srearCamera").val().split(' ')[0],
+
+    };
+
+    if( !(brand.vivo || brand.oppo || brand.realme || brand.oneplus || brand.xiaomi || brand.samsung) ){
+          alert("Please select at least 1 brand for suggestion");
+          return;
+    }else{
+        
+       $.ajax({
+           type:"GET",
+           url:"/suggest/suggestPhone",
+           contentType:"application/json",
+           data: productObj,
+           success: function(data){
+               if(data){
+
+                if(data.responseData[0] == '' ){
+                      outputVoice(`${data.responseData[1]}`)     
+                      $("#sgstmessage").html(`<h3> ${data.responseData[1]}</h3>` )
+                      $("#sgstmessage").attr("class","dark-header-1 mt-3 p-2 text-center");
+                      $("#sgstmessage").attr("style","color:#ccc;");
+
+                }else{
+
+
+               const resultMsg = `${data.responseData[1]}`
+               const p_id = `${data.responseData[0]}`
+                $("#sgstmessage").html(`<a href="product-detail/${p_id}" >${data.responseData[1]}</a>`)
+                $("#sgstmessage").attr("class","dark-header-1 mt-3 p-2 text-center");
+                $("#sgstmessage").attr("style","color:#ccc;");
+                $("#sgstmessage a").attr("style","color:#ccc;");
+                outputVoice(resultMsg) 
+            }
+
+        }
+    
+    },
+
+       })
+
+    }
+
+    console.log(productObj)
+   
+ }
+
+
+// suggest page ajax

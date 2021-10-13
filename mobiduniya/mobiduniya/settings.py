@@ -124,8 +124,13 @@ MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 LOGIN_REDIRECT_URL='/profile/'
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+# RAZORPAY_API_KEY='rzp_test_HiuO1XDYFRkbZL'
+# RAZORPAY_API_SECRET_KEY='fga71PobXzSizUCCRKS4r9eY'
+
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
-EMAIL_HOST_USER='mobiduniya2021@gmail.com'
-EMAIL_HOST_PASSWORD='xizewqhwsaeorkwb'
 EMAIL_USE_TLS=True
+EMAIL_HOST_USER='mobiduniya2021@gmail.com'
+EMAIL_HOST_PASSWORD='Mobi@2021#Duniya'
+
+# ACCOUNT_EMAIL_VERIFICATION='none'

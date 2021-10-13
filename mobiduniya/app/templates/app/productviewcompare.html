@@ -7,7 +7,7 @@
     <!-- upper container -->
     <div class="row pb-3">
         <div class="col-sm-5 col-md-12 mb-0  col-lg-5 position-relative ">
-            <div class="logo-bx dark-header-1" onclick="showFeatures()" id="compare-btn">
+            <div class="logo-bx dark-header-1" onclick="showFeaturesView()" id="compare-btn">
                 <img src="{% static 'app/images/brainy.png' %}" alt="">
             </div>
             <div id="message"></div>
@@ -21,7 +21,7 @@
                             <select name="brand1" id="brand1" class="form-select bg-dark"
                                 style="color:#cccc; border:none; box-shadow: 2px 2px 4px #000;"
                                 onchange="getProducts()">
-                                <option value="" selected>Select the Brand</option>
+                                <option value="{{productt.brand}}" >{{productt.brand}}</option>
                                 <option value="samsung">Samsung</option>
                                 <option value="vivo">Vivo</option>
                                 <option value="oppo">Oppo</option>
@@ -33,7 +33,7 @@
                             <select name="product1" id="product1" class="form-select bg-dark"
                                 style="color:#cccc; border:none; box-shadow: 2px 2px 4px #000;"
                                 onchange="showProducts()">
-                                <option value="" selected>Select the Product</option>
+                                <option value="{{productt.id}}" >{{productt.title}}</option>
                                 <!-- <option value="">product1</option>
                                 <option value="">product2</option>
                                 <option value="">product3</option>
@@ -44,24 +44,23 @@
                             <div class="carousel-inner" id="product1-carousel" style="height: 100%;">
 
                                 <div class="carousel-item active">
-                                    <img src="" alt="" class="d-block w-100">
+                                    <div class="imgbx shadow" style="height:280px; background:#fefefe;">
+                                    <img src="{{productt.product_image1.url}}" alt="" class="d-block w-100">
+                                    </div>
                                 </div>
-                                <!-- <div class="carousel-item">
-                                    <img src="" alt="" class="d-block w-100">
+                                 <div class="carousel-item">
+                                     <div class="imgbx shadow" style="height:280px; background:#fefefe;">
+                                    <img src="{{productt.product_image2.url}}" alt="" class="d-block w-100">
+                                    </div>
 
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="" alt="" class="d-block w-100">
-
+                                    <div class="imgbx shadow" style="height:280px; background:#fefefe;">
+                                        <img src="{{productt.product_image3.url}}" alt="" class="d-block w-100">
+                                        </div>
                                 </div>
-                                <div class="carousel-item">
-                                    <img src="" alt="" class="d-block w-100">
 
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="" alt="" class="d-block w-100">
-
-                                </div> -->
+                                
 
                             </div>
                         </div>
@@ -139,6 +138,7 @@
     <div id="product-features" class="container">
            
         <div class="alert alert-success my-2 text-center">Please Select the products to compare</div>
+
     </div>
 
 

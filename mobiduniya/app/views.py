@@ -1,6 +1,6 @@
 from django.http import request
 from django.http.response import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, resolve_url
 from django.views import View
 from .models import Cart,Person,Product,OrderPlaced
 from .forms import CustomerRegistrationForm,CustomerProfileForm
@@ -246,6 +246,177 @@ def oneplus(request,data=None):
 @login_required
 def compare(request):
     return render(request,'app/compare.html')
+
+@login_required
+def productviewcompare(request,pk):
+    product=Product.objects.get(pk=pk)
+    return render(request,'app/productviewcompare.html',{'productt':product})
+
+def suggestion(request):
+    productData = Product.objects.all()
+    ram = set()
+    rom = set()
+    processor = set()
+    display = set()
+    front = set()
+    rear = set()
+    responseData = dict()
+    for x in productData:
+        ram.add(x.ram)
+        rom.add(x.internal) 
+        processor.add(x.processor)
+        display.add(x.display)
+        front.add(x.front_camera)
+        rear.add(x.rear_camera)
+
+    # print(ram)
+    responseData['ram'] = list(ram) 
+    responseData['rom'] = list(rom) 
+    responseData['processor'] = list(processor) 
+    responseData['display'] = list(display) 
+    responseData['frontCamera'] = list(front) 
+    responseData['rearCamera'] = list(rear) 
+    # print(responseData)
+    return render(request,'app/suggestion.html',{'data':responseData})
+
+def suggestphone(request):
+    # True represents that following brands have been checked
+    SAMSUNG = request.GET['samsung']   
+    OPPO = request.GET['oppo']
+    VIVO = request.GET['vivo']
+    ONEPLUS = request.GET['oneplus']
+    XIAOMI = request.GET['xiaomi']
+    REALME = request.GET['realme']
+
+    brand_list = [
+         ['samsung',SAMSUNG],
+         ['oppo',OPPO],
+         ['vivo',VIVO],
+         ['oneplus',ONEPLUS],
+         ['xiaomi',XIAOMI],
+         ['realme',REALME],
+         ] 
+
+    ###### Assumed that user wants only xiaomi and realme mobiles
+    #This is just assumed one, replace with data coming from input field of form
+    PRICE_RANGE = request.GET['price']
+    RAM = int(request.GET['ram'])
+    STORAGE = int(request.GET['rom'])
+    PROCESSOR = request.GET['processor']
+    DISPLAY = request.GET['display']
+    R_CAM = int(request.GET['rear_camera'])
+    F_CAM = int(request.GET['front_camera'])
+
+    # print(SAMSUNG,OPPO,VIVO,ONEPLUS,XIAOMI,REALME,PRICE_RANGE,RAM,STORAGE,PROCESSOR,DISPLAY,R_CAM,F_CAM)
+    # print(type(R_CAM))
+    # print(type(RAM))
+
+
+    #adjusting price as per value set
+    min_price = -1
+    max_price = -1
+    if PRICE_RANGE == "< 15000":
+        min_price = 0
+        max_price = 15000
+    elif PRICE_RANGE == "15000-20000":
+        min_price = 15000
+        max_price = 20000
+    elif PRICE_RANGE == "20000-25000":
+        min_price = 20000
+        max_price = 25000
+    elif PRICE_RANGE == "25000-30000":
+        min_price = 25000
+        max_price = 30000
+    elif PRICE_RANGE == "> 30000":
+        min_price = 30000
+        max_price = 20000
+
+    #Query to fetch all mobiles of selected brands and convert it into dictionary where key=<brand + mobile> OR <product ID> & value=0
+    ###### Since only realme and xiaomi were checked(as assumed), creating demo dictionary
+    
+    products = dict()
+     
+    for x in brand_list:
+        if x[1] == 'true':  
+            productName = Product.objects.filter(brand = x[0])
+            ls = [] 
+            for x in productName:
+                product_id = x.id
+                brand = x.brand
+                title = x.title
+                price = x.selling_price
+                display = x.display
+                ram  = x.ram
+                internal = x.internal
+                processor = x.processor
+                front_camera = x.front_camera.split(' ')[0]
+                rear_camera = x.rear_camera.split(' ')[0]
+                products[brand+title] = {'value':0,"id":product_id,'brand':brand,'title':title,'price':price,'ram':int(ram),'internal':int(internal),'display':display,'processor':processor,'front_camera':int(front_camera),'rear_camera':int(rear_camera)}   
+                   
+    
+    # # print('products',products)
+    # print('access',products['samsungGalaxy A52s 5G']['price'] )
+    # products = {"xiaomi mi 10i":0,
+    #             "xiaomi note 10s":0,
+    #             "xiaomi note 10 pro max":0,
+    #             "xiaomi mi 11 lite":0,
+    #             "xiaomi mi 11x pro 5g":0,
+    #             "xiaomi redmi 9 power":0,
+    #             "xiaomi mi 11x":0,
+    #             "realme x7 max 5g":0,
+    #             "realme gt master edition":0,
+    #             "realme 8":0,
+    #             "realme x3 superzoom":0,
+    #             "realme x7 5g":0,
+    #             "realme 8 pro":0}
+    
+
+    for key,value in products.items():
+        if min_price <= products[key]['price'] < max_price:
+            products[key]['value'] += 1
+        if products[key]['ram'] >= RAM:
+            products[key]['value'] += 1
+        if products[key]['internal'] >= STORAGE:
+            products[key]['value'] += 1
+        if PROCESSOR in products[key]['processor']:
+            products[key]['value'] += 1
+        if DISPLAY in products[key]['display']:
+            products[key]['value'] += 1
+        if products[key]['rear_camera'] >= R_CAM:
+            products[key]['value'] += 1
+        if products[key]['front_camera'] >= F_CAM:
+            products[key]['value'] += 1
+    
+    # print('res',products)
+    ls = []
+    for key,value in products.items():
+          ls.append(products[key]['value'])
+
+    max_val = max(ls)
+    print('max',max_val);    
+        
+    res = {key:val for key,val in products.items() if val['value'] == max_val}
+    
+    print(res)
+
+    msg = "No Mobile available" 
+    if(len(res)>1):
+        lowest_cost = 500000
+        lowest_cost_set = None
+        for key,value in res.items():
+            if res[key]['price'] < lowest_cost:
+                lowest_cost = res[key]['price']
+                lowest_cost_set = [ res[key]['id'],key ]     
+        return JsonResponse({'responseData':lowest_cost_set}) 
+    else:
+        return JsonResponse({'responseData':['',msg] })
+    
+   
+    
+
+
+
+
 
 @login_required
 def getproduct(request):
