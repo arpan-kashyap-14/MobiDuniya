@@ -1,0 +1,96 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Suggestion{% endblock title %}
+{% block main-content %}
+
+<div class="container" style="margin-top: 90px;">
+    <!-- upper container -->
+    <div class="row pb-3">
+        <div class="col-sm-5 col-md-12 mb-0  col-lg-5 position-relative ">
+            <div class="logo-bx dark-header-1" id="suggest-btn">
+                <img src="{% static 'app/images/brainy.png' %}" alt="">
+            </div>
+            <div id="sgstmessage"></div>
+        </div>
+        <div class="col-sm-7 col-md-12 col-lg-7 dark-header-1">
+            <div class="row">
+                <div class="col-sm-12 p-3">
+
+                    <div class="brand-checkbox dark-header-1 p-1">
+                        <div class="form-check ">
+                            <input class="form-check-input" type="checkbox" value="samsung" id="check-samsung"
+                                name="samsung">
+                            <label for="" class="form-check-label" style="color:#ccc;">Samsung</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="vivo" id="check-vivo" name="vivo">
+                            <label for="" class="form-check-label" style="color:#ccc;">Vivo</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="oppo" id="check-oppo" name="oppo">
+                            <label for="" class="form-check-label" style="color:#ccc;">Oppo</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="xiaomi" id="check-xiaomi"
+                                name="xiaomi">
+                            <label for="" class="form-check-label" style="color:#ccc;">Xiaomi</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="oneplus" id="check-oneplus"
+                                name="oneplus">
+                            <label for="" class="form-check-label" style="color:#ccc;">OnePlus</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="realme" id="check-realme"
+                                name="realme">
+                            <label for="" class="form-check-label" style="color:#ccc;">Realme</label>
+                        </div>
+                    </div>
+
+                    <div class="suggest-dropdown">
+
+                        <div class="product-select my-2">
+
+                            <select name="sprice" id="sprice" class="form-select bg-dark"
+                                style="color:#cccc; border:none; box-shadow: 2px 2px 4px #000;" onchange="">
+                                <option value="" selected>Select the Price Range</option>
+                                <option value="less than 15000">less than 15000</option>
+                                <option value="15000-20000">15000-20000</option>
+                                <option value="20000-25000">20000-25000</option>
+                                <option value="25000-30000">25000-30000</option>
+                                <option value="> 30000">>30000</option>
+                            </select>
+                        </div>
+
+                        {% for key,values in data.items %}
+
+                        <div class="product-select my-2">
+                            <select name="s{{key}}" id="s{{key}}" class="form-select bg-dark"
+                                style="color:#cccc; border:none; box-shadow: 2px 2px 4px #000;" onchange="">
+                                <option value="" selected>Select the minimum {{key}} </option>
+
+                                {% for x in values %}
+                                <option value="{{x}}">{{x}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        {% endfor %}
+                    </div>
+                    <div class="suggest-btn" style="height: 120px;">
+                        <a href="#" class="k-btn" onclick="suggestPhones();"  ><span></span><span></span><span></span><span></span> Suggest</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+    {% endblock main-content %}

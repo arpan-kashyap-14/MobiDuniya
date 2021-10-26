@@ -1,0 +1,342 @@
+.owl-carousel .item{
+ /* border: 1px solid black; */
+ font-size: 24px;
+ text-align: center;
+ margin-top: 20px;
+ background: #fefefe;
+ width: 14rem;
+ padding: 10px;
+ border-radius: 10px;
+ box-shadow: 2px 2px 2px rgba(0,0,0,0.15),-2px -2px 2px rgba(0,0,0,0.15);
+}
+
+.owl-next{
+ position: relative;
+ top:-200px;   
+ float:right;
+}
+.owl-prev{
+    position: relative;
+    top:-200px;   
+    float:left;
+}
+.owl-prev span{
+ font-size: 24px;
+ font-weight: bold;
+}
+.owl-next span{
+ font-size: 24px;
+ font-weight: bold;
+}
+
+.owl-item{
+    text-align: center;
+}
+
+.imgbx{
+     position: relative;
+     width:100%;
+     height: 200px;
+      overflow: hidden;
+    }
+.imgbx img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+
+.product-menu-list a{
+    /* margin-top: 50px;  */
+    position: relative;
+    background: #252525 !important;
+    margin: 2px 2px;
+    color: #ccc !important;
+
+}
+
+.product-menu-list a:hover{
+    color: #333 !important;
+    font-weight: 600 !important;
+
+}
+
+
+.product-menu-list a::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: #2196f3;
+    border-radius: 8px;
+    transition-duration: 1s;
+    z-index: -1;
+}
+
+
+.product-menu-list a:hover::before{
+    width: 100% ;
+
+}
+
+.product-detail .product-card{
+   position: relative;
+   margin: 0 5px;
+   background: #fefefe;
+   border-radius: 8px;
+   box-shadow: 4px 4px 8px #000,-4px -4px 8px rgba(255,255,255,0.25) ;
+}
+
+.dark-header{
+    background: rgba(0,0,0,0.15);
+    line-height: 1.8em;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 5px 5px 3px #252525,
+                -4px -4px 3px #555555;
+}
+.dark-header-1{
+    background: rgba(0,0,0,0.15);
+    line-height: 1.8em;
+    border-radius: 10px;
+    /* text-transform: uppercase; */
+    letter-spacing: 1px;
+    box-shadow: 5px 5px 3px #252525;
+}
+
+.menu-list{
+    background: #555555;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.menu-list a{
+    background: #2d2d2d;
+    margin: 2px 0;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+}
+
+.menu-list a:hover{
+    background: #2196f3;
+}
+
+.form-btn{
+    
+        background: #677eff !important;
+        color: #fff !important;
+        cursor: pointer;
+        font-size: 14px !important;
+        letter-spacing: 1px !important;
+        text-transform: uppercase;
+        transition: 0.5s;
+}
+.form-btn-2{
+    
+    /* background: #677eff !important; */
+    color: #fff !important;
+    cursor: pointer;
+    font-size: 14px !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase;
+    transition: 0.5s;
+}
+    
+
+.box-shade{
+    border-radius: 10px; 
+    border:1px solid rgba(0,0,0,0.15);
+    box-shadow: 4px 4px 25px #000,
+                -4px -4px 4px rgba(255,255,255,0.25);
+
+
+}
+
+ .home-card{
+     background: #2d2d2d !important;
+     border-radius: 10px; 
+     padding: 5px;
+     box-shadow: inset 0 -5px 10px #000 !important;
+ }
+
+ 
+ .bar-glow{
+     box-shadow: 4px 4px 25px lime;
+     
+ }
+
+ /* compare css */
+  .logo-bx{
+      position: relative;
+      left: 0;
+      top: 0;
+      width: 80%;
+      height: 300px;
+      margin: 0 auto;
+      transition: 0.3s;
+      cursor: pointer;
+ }
+
+ .logo-bx:hover{
+     box-shadow: 10px 10px 15px #009ffd  !important;
+    /* linear-gradient(#009ffd,#2a2a72) */
+}
+
+ .logo-bx img{
+     position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+ }
+
+ .mobile-slider{
+     position: relative;
+     height: 300px;
+     width: 100%;
+ }
+
+ .specification{
+    position: relative; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+
+ }
+ 
+ /* compare css */
+
+ /* suggest css start */
+.brand-checkbox{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    
+    
+}
+
+.suggest-btn{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.k-btn{
+    position: absolute;
+    color: #1670f0 !important;
+    padding: 10px 20px;
+    font-size: 30px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+.k-btn:hover{
+    animation: none;
+    background: #009ffd;
+    box-shadow: 2px 2px 4px #1670f0,-2px -2px 4px #1670f0;
+}
+
+
+
+.k-btn::before{
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    width: 50%;
+    background: rgba(255,255,255,0.05);
+}
+
+.k-btn span:nth-child(1){
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #0c002b,#1779ff);
+    animation:  animate1 2s linear infinite;
+}
+
+@keyframes animate1 {
+    0%{
+        transform: translateX(-100%);
+    }
+    100%{
+        transform: translateX(100%);
+    }
+}
+
+.k-btn span:nth-child(2){
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #0c002b,#1779ff);
+    animation: animate2 2s linear infinite;
+}
+
+
+@keyframes animate2 {
+    0%{
+        transform: translateY(-100%);
+    }
+    100%{
+        transform: translateY(100%);
+    }
+}
+
+
+.k-btn span:nth-child(3){
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to left, #0c002b,#1779ff);
+    animation: animate3 2s linear infinite;
+
+}
+
+@keyframes animate3 {
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+.k-btn span:nth-child(4){
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to top, #0c002b,#1779ff);
+    animation: animate4 2s linear infinite;
+
+}
+
+@keyframes animate4 {
+    0%{
+        transform: translateY(100%);
+    }
+    100%{
+        transform: translateY(-100%);
+    }
+}
+ /* suggest css end */
