@@ -43,11 +43,12 @@ urlpatterns = [
     path('minuscart/',views.minus_cart,name='minus_cart'),
     path('removecart/',views.remove_cart,name='remove_cart'),  
     path('accounts/login/',auth_views.LoginView.as_view(template_name='app/login.html',authentication_form=LoginForm),name='login'),
+    path('user/accounts/login/',auth_views.LoginView.as_view(template_name='app/login.html',authentication_form=LoginForm),name='userlogin'),
     path('logout/',auth_views.LogoutView.as_view(next_page='login'),name='logout'),
     path('checkout/', views.checkout, name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
     path('search/',views.searchbox,name='search'),
-    # path('delete/',views.delete_user,name='delete'),
+    path('delete/',views.delete,name='delete'),
     path('productviewcompare/<int:pk>',views.productviewcompare,name='productviewcompare'),
     path('passwordchange/',auth_views.PasswordChangeView.as_view(template_name='app/passwordchange.html',form_class=MyPasswordChangeForm,success_url='/passwordchangedone/'),name='passwordchange'),
 

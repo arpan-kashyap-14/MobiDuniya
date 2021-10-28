@@ -2,7 +2,7 @@ from django.http import request
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render, resolve_url
 from django.views import View
-from .models import Cart,Person,Product,OrderPlaced
+from .models import Cart,Person,Product,OrderPlaced,User
 from .forms import CustomerRegistrationForm,CustomerProfileForm
 from django.contrib import messages
 from app import forms, pdfconvertor
@@ -38,8 +38,11 @@ import datetime
 # new import end
 
 
-
-
+@login_required
+def delete(request):
+    user=request.user
+    user.delete()
+    return JsonResponse({"res":"renderLogin"})
 
 class InvoiceGenerator():
     '''
@@ -513,7 +516,7 @@ def suggestphone(request):
      
     for x in brand_list:
         if x[1] == 'true':  
-            productName = Product.objects.filter(brand = x[0]).filter(selling_price=(min_price,max_price))
+            productName = Product.objects.filter(brand = x[0])
             ls = [] 
             for x in productName:
                 product_id = x.id
@@ -526,8 +529,10 @@ def suggestphone(request):
                 processor = x.processor
                 front_camera = x.front_camera.split(' ')[0]
                 rear_camera = x.rear_camera.split(' ')[0]
-                products[brand+title] = {'value':0,"id":product_id,'brand':brand,'title':title,'price':price,'ram':int(ram),'internal':int(internal),'display':display,'processor':processor,'front_camera':int(front_camera),'rear_camera':int(rear_camera)}   
-                   
+                if price >= min_price and price <= max_price:
+                    products[brand+title] = {'value':0,"id":product_id,'brand':brand,'title':title,'price':price,'ram':int(ram),'internal':int(internal),'display':display,'processor':processor,'front_camera':int(front_camera),'rear_camera':int(rear_camera)}   
+            
+
     
     # # print('products',products)
     # print('access',products['samsungGalaxy A52s 5G']['price'] )

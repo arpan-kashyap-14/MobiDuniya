@@ -40,9 +40,13 @@
       <div class="user-container">
         <div class="user-profile" id="user-content">
           <div class="basic-info">
+            
+             <a class="edit-btn" href="{% url 'profile' %}" ><i class="fa fa-pen" aria-hidden="true" ></i></a> 
+
             <div class="imgbx">
               <img src="{{person.customer_image.url}}" alt="profile-image">
             </div>
+
             <div class="content">
               <h2>{{person.name}}</h2>
               <h3>{{person.email}}</h3>
@@ -57,6 +61,7 @@
     </div>
   </div>
 </div>
+
 <script>
 
   const userContent = document.getElementById("user-content");
@@ -68,6 +73,7 @@
       case '1':
         userContent.innerHTML = `
                   <div class="basic-info">
+             <a class="edit-btn" href="{% url "profile" %}" ><i class="fa fa-pen" aria-hidden="true" ></i></a> 
                                 <div class="imgbx">
                                     <img src="{{person.customer_image.url}}" alt="profile-image">
                                 </div>
@@ -121,6 +127,10 @@
         <div class="change-password">    
           </div>`;
         break;
+      case '10':
+        console.log("delete Account")
+        deleteAccount("{{person.id}}")
+        break;
       default:
         console.log("error");
     }
@@ -128,36 +138,27 @@
   }
 
 
-// $(".user-menu li a").on("click",function(){
+  const deleteAccount = (pid) =>{
 
-//    const dataId = $(this).attr("data-id");
+    console.log(pid)
+    $.ajax({
+       method:"GET",
+       url:"/delete",
+       data:{pid:pid},
+       success:function(data){
+         if(data.res == "renderLogin"){
+           window.location.href = "/accounts/login"
+         }
+         else{
+               alert("Something Went Wrong")
+         }
+       },
+       error:function(error){
+          console.log(error)
+       }
+    }); 
 
-//    console.log(dataId); 
-
-//    console.log(typeof(dataId));
-
-//    switch(dataId){
-//        case '1':
-//           userContent.innerHTML = "<h1>{{person.name}}</h1>";
-//           break;
-//        case '2':
-//         userContent.innerHTML = "<h1>{{person.email}}</h1>";
-//         break;
-//         case '3':
-//           userContent.innerHTML = "<h1>Link-3</h1>";
-//           break;
-//        case '4':
-//         userContent.innerHTML = "<h1>Link-4</h1>";
-//         break;
-//         case '5':
-//         userContent.innerHTML = "<h1>Link-4</h1>";
-//         break;
-//        default:
-//          console.log("error"); 
-//    }
-
-
-// });
+  }
 
 
 

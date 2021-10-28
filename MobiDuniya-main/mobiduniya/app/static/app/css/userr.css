@@ -160,3 +160,20 @@
 .tb-hover:hover{
    background: #2196f3;
 }
+
+.edit-btn{
+
+   position: absolute;
+   right: 0;
+   bottom: 0;
+   font-size: 25px;
+   padding: 10px 20px;
+   background: #777;
+   color: #ccc;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+.edit-btn:hover{
+     color: #2196f3;
+}
