@@ -1,66 +1,10 @@
-var langs =
-[['Afrikaans',       ['af-ZA']],
- ['Bahasa Indonesia',['id-ID']],
- ['Bahasa Melayu',   ['ms-MY']],
- ['Català',          ['ca-ES']],
- ['Čeština',         ['cs-CZ']],
- ['Deutsch',         ['de-DE']],
- ['English',         ['en-AU', 'Australia'],
-                     ['en-CA', 'Canada'],
-                     ['en-IN', 'India'],
-                     ['en-NZ', 'New Zealand'],
-                     ['en-ZA', 'South Africa'],
-                     ['en-GB', 'United Kingdom'],
-                     ['en-US', 'United States']],
- ['Español',         ['es-AR', 'Argentina'],
-                     ['es-BO', 'Bolivia'],
-                     ['es-CL', 'Chile'],
-                     ['es-CO', 'Colombia'],
-                     ['es-CR', 'Costa Rica'],
-                     ['es-EC', 'Ecuador'],
-                     ['es-SV', 'El Salvador'],
-                     ['es-ES', 'España'],
-                     ['es-US', 'Estados Unidos'],
-                     ['es-GT', 'Guatemala'],
-                     ['es-HN', 'Honduras'],
-                     ['es-MX', 'México'],
-                     ['es-NI', 'Nicaragua'],
-                     ['es-PA', 'Panamá'],
-                     ['es-PY', 'Paraguay'],
-                     ['es-PE', 'Perú'],
-                     ['es-PR', 'Puerto Rico'],
-                     ['es-DO', 'República Dominicana'],
-                     ['es-UY', 'Uruguay'],
-                     ['es-VE', 'Venezuela']],
- ['Euskara',         ['eu-ES']],
- ['Français',        ['fr-FR']],
- ['Galego',          ['gl-ES']],
- ['Hrvatski',        ['hr_HR']],
- ['IsiZulu',         ['zu-ZA']],
- ['Íslenska',        ['is-IS']],
- ['Italiano',        ['it-IT', 'Italia'],
-                     ['it-CH', 'Svizzera']],
- ['Magyar',          ['hu-HU']],
- ['Nederlands',      ['nl-NL']],
- ['Norsk bokmål',    ['nb-NO']],
- ['Polski',          ['pl-PL']],
- ['Português',       ['pt-BR', 'Brasil'],
-                     ['pt-PT', 'Portugal']],
- ['Română',          ['ro-RO']],
- ['Slovenčina',      ['sk-SK']],
- ['Suomi',           ['fi-FI']],
- ['Svenska',         ['sv-SE']],
- ['Türkçe',          ['tr-TR']],
- ['български',       ['bg-BG']],
- ['Pусский',         ['ru-RU']],
- ['Српски',          ['sr-RS']],
- ['한국어',            ['ko-KR']],
- ['中文',             ['cmn-Hans-CN', '普通话 (中国大陆)'],
-                     ['cmn-Hans-HK', '普通话 (香港)'],
-                     ['cmn-Hant-TW', '中文 (台灣)'],
-                     ['yue-Hant-HK', '粵語 (香港)']],
- ['日本語',           ['ja-JP']],
- ['Lingua latīna',   ['la']]];
+
+
+// const outputVoice = (txt) => {
+//   const msg = new SpeechSynthesisUtterance();
+//   msg.text = `${txt}`;
+//   window.speechSynthesis.speak(msg);
+// }
 
 // for (var i = 0; i < langs.length; i++) {
 //   select_language.options[i] = new Option(langs[i][0], i);
@@ -162,9 +106,42 @@ if (!('webkitSpeechRecognition' in window)) {
          contentType:"application/json",
          data:reqData,
          success:function(data){
-            console.log(data.resData)
+
             if(data.resData == "render_cart"){
                 window.location.href = "/cart";
+            }
+            if(data.productId != null){
+              pid = data.productId
+              window.location.href = `product-detail/${pid}`;
+            }
+         
+            if(data.brandName != null){
+              b = data.brandName
+              brand_name = b.toLowerCase();  
+              window.location.href = `/${brand_name}`;
+            }
+             
+
+            if(data.user == "userProfile"){
+              window.location.href = "/user";
+            }
+            if(data.cart == "userCart"){
+                window.location.href = "/cart"
+            }
+            if(data.suggest == "userSuggest"){
+              window.location.href="/suggest";
+            }  
+            if(data.compare == "userCompare"){
+              window.location.href ="/compare"
+            }
+            if(data.password == "userPassword"){
+              window.location.href = "/passwordchange"
+            }
+            if(data.home == "userHome"){
+              window.location.href = "/" 
+            }
+            if(data.logout == "userLogout"){
+              window.location.href = "/logout"
             }
 
          },
@@ -175,6 +152,7 @@ if (!('webkitSpeechRecognition' in window)) {
        });
        
      }
+
   };
 
   // voice on result
@@ -265,6 +243,7 @@ function startButton(event) {
   start_timestamp = event.timeStamp;
 }
 
+
 // show messages 
 function showInfo(s) {
   if (s) {
@@ -289,4 +268,76 @@ function showButtons(style) {
   // email_button.style.display = style;
   // copy_info.style.display = 'none';
   // email_info.style.display = 'none';
+}
+
+
+
+// search on click
+
+const searchContent = (e) =>{
+  
+  const searchVal = $("#final_span").val();
+
+  if(searchVal != ""){
+
+    reqData = {text:searchVal}
+
+    $.ajax({
+      type:"GET",
+      url:"/search",
+      contentType:"application/json",
+      data:reqData,
+      success:function(data){
+
+         if(data.resData == "render_cart"){
+             window.location.href = "/cart";
+         }
+         else if(data.productId != null){
+           pid = data.productId
+           window.location.href = `product-detail/${pid}`;
+         }
+      
+         else if(data.brandName != null){
+           b = data.brandName
+           brand_name = b.toLowerCase();  
+           window.location.href = `/${brand_name}`;
+         }
+         else if(data.user == "userProfile"){
+           window.location.href = "/user";
+         }
+         else if(data.cart == "userCart"){
+             window.location.href = "/cart"
+         }
+         else if(data.suggest == "userSuggest"){
+           window.location.href="/suggest";
+         }  
+         else if(data.compare == "userCompare"){
+           window.location.href ="/compare"
+         }
+         else if(data.password == "userPassword"){
+           window.location.href = "/passwordchange"
+         }
+         else if(data.home == "userHome"){
+           window.location.href = "/" 
+         }
+         else if(data.logout == "userLogout"){
+           window.location.href = "/logout"
+         }else{
+
+             outputVoice("Please Try Another Query") 
+         }
+
+      },
+      error:function(error){
+        console.log(error); 
+      }
+
+    });
+
+  }else{
+    
+     outputVoice("Please fill the search Box");
+  }
+
+
 }

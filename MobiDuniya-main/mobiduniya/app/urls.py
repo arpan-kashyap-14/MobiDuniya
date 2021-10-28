@@ -47,6 +47,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
     path('search/',views.searchbox,name='search'),
+    # path('delete/',views.delete_user,name='delete'),
     path('productviewcompare/<int:pk>',views.productviewcompare,name='productviewcompare'),
     path('passwordchange/',auth_views.PasswordChangeView.as_view(template_name='app/passwordchange.html',form_class=MyPasswordChangeForm,success_url='/passwordchangedone/'),name='passwordchange'),
 

@@ -179,7 +179,10 @@ class MailAssistant():
         self.subject = "Invoice of Purchase"
         self.body = "Thank you for making a purchase from MobiDuniya"
         message = self.__emailSkeleton(invoice)
-        return self.__sendMail(message)
+        sent= self.__sendMail(message)
+        if os.path.isfile(invoice):
+            os.remove(invoice)
+        return sent    
 
 
 
@@ -510,7 +513,7 @@ def suggestphone(request):
      
     for x in brand_list:
         if x[1] == 'true':  
-            productName = Product.objects.filter(brand = x[0])
+            productName = Product.objects.filter(brand = x[0]).filter(selling_price=(min_price,max_price))
             ls = [] 
             for x in productName:
                 product_id = x.id
@@ -565,11 +568,11 @@ def suggestphone(request):
           ls.append(products[key]['value'])
 
     max_val = max(ls)
-    print('max',max_val);    
+    # print('max',max_val);    
         
     res = {key:val for key,val in products.items() if val['value'] == max_val}
     
-    print(res)
+    # print(res)
 
     msg = "No Mobile available" 
     if(len(res)>1):
@@ -821,7 +824,10 @@ def searchbox(request):
     ls = reqtext.split(" ")
     newls = []
     for x in ls:
-        newls.append(x.capitalize())
+        if x == "5g":
+            newls.append("5G")
+        else:
+            newls.append(x.capitalize())
     
     text = " ".join(newls)
                     
@@ -867,6 +873,7 @@ def searchbox(request):
                 if product in text:
                     product_matched = True
                     mobile_query = True
+
                     if "Buy" in text or "Purchase" in text:
                         #Directly add the product in cart -> brand = <brand> & mobileName = <products[product_index]>
                         #Redirect to Cart
@@ -881,44 +888,61 @@ def searchbox(request):
                     else:
                         #Fetch the id of mobile where mobileName = <products[product_index]> 
                         #Redirect to product view page where product ID = fetched one
-                        pass
+                        p_id = 0
+                        prodData = Product.objects.filter(title = product)
+                        for x in prodData:
+                            p_id = x.id    
+                        print('id',p_id)
+                        return JsonResponse({"productId":p_id})
             
-    #         if not product_matched:
-    #             #Redirect to web page which comes from dropdown where Brand = <brand>
-    #             mobile_query = True
-    #             pass
+            if not product_matched:
+                #Redirect to web page which comes from dropdown where Brand = <brand>
+                mobile_query = True
+                return JsonResponse({"brandName":text})
+
+                
+                
 
         
-    # if not mobile_query:
+    if not mobile_query:
         
-    #     if "dashboard" in text or "profile" in text:
-    #         #Redirect to UserProfile section
-    #         pass
+        if "Dashboard" in text or "Profile" in text:
+            #Redirect to UserProfile section
+            return JsonResponse({"user":"userProfile"})
 
-    #     elif "cart" in text:
-    #         #Redirect to Cart page
-    #         pass
+        elif "Cart" in text:
+            #Redirect to Cart page
+            return JsonResponse({"cart":"userCart"})
 
-    #     elif "compare" in text:
-    #         #Redirect to Mobile Comparison page
-    #         pass
 
-    #     elif "suggest" in text:
-    #         #Redirect to Mobile Suggestion page
-    #         pass
+        elif "Compare" in text:
+            #Redirect to Mobile Comparison page
+            return JsonResponse({"compare":"userCompare"})
 
-    #     elif "password" in text:
-    #         #Redirect to Change Password page
-    #         pass
+
+        elif "Suggest" in text:
+            #Redirect to Mobile Suggestion page
+            return JsonResponse({"suggest":"userSuggest"})
+
+        elif "Password" in text:
+            #Redirect to Change Password page
+            return JsonResponse({"password":"userPassword"})
+        elif "Home" in text:
+            return JsonResponse({"home":"userHome"})
 
     #     elif "delete" in text:
     #         #Query to delete account
     #         #Redirect to Index page
     #         pass
 
-    #     elif "logout" in text or "signout" in text or "signmeout" in text:
-    #         #Logout the account
-    #         #Redirect to login page
-    #         pass
+        elif "Log Out" in text or "Sign Out" in text or "Sign Me Out" in text:
+            return JsonResponse({"logout":"userLogout"}) 
+
+# @login_required
+# def delete_user(request):
+#     if request.method=='POST':
+#         usr=request.user
+#         usr.delete()
+#     return redirect('/accounts/login')
 
 

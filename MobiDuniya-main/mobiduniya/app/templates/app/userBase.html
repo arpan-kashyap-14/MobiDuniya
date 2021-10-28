@@ -401,10 +401,10 @@
           
           <div class="nav-item mx-2">
 
-            <form class="d-flex search-sec">
+            <div class="d-flex search-sec">
               <input class="form-control final" type="search" id="final_span"  placeholder="Search" aria-label="Search">
-              <button class="btn search-btn" style="background: radial-gradient(#009ffd,#2a2a72); "  type="submit"><i class="fas fa-search"></i></button>
-            </form>
+              <button class="btn search-btn" style="background: radial-gradient(#009ffd,#2a2a72); " onclick="searchContent()"><i class="fas fa-search"></i></button>
+            </div>
            
             <!-- <div id="results">
               <span id="final_span" class="final"></span>
@@ -424,7 +424,7 @@
           </div>
 
           
-      <div id="info" style="font-size: 16px;">
+      <div id="info" style="font-size: 16px; height: 50px;">
         <p id="info_start">Click on the microphone icon and begin speaking.</p>
         <p id="info_speak_now">Speak now.</p>
         <p id="info_no_speech">No speech was detected. You may need to adjust your
