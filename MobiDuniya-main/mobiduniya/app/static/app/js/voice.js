@@ -13,6 +13,12 @@
 // updateCountry();
 // select_dialect.selectedIndex = 6;
 
+const outputVoice = (txt) => {
+  const msg = new SpeechSynthesisUtterance();
+  msg.text = `${txt}`;
+  window.speechSynthesis.speak(msg);
+}
+
 showInfo('info_start');
 
 // function updateCountry() {
@@ -32,6 +38,8 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+
+
 
 if (!('webkitSpeechRecognition' in window)) {
   upgrade();
@@ -142,6 +150,12 @@ if (!('webkitSpeechRecognition' in window)) {
             }
             if(data.logout == "userLogout"){
               window.location.href = "/logout"
+            }
+            if(data.default == "userDefault"){
+              
+                // outputVoice(`Please try another query`);
+                alert("hello")
+                    
             }
 
          },

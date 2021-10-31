@@ -829,18 +829,17 @@ def searchbox(request):
     ls = reqtext.split(" ")
     newls = []
     for x in ls:
-        if x == "5g":
+        if x == "5g" or x== "5G":
             newls.append("5G")
         else:
             newls.append(x.capitalize())
     
     text = " ".join(newls)
-                    
-    
+                        
     # text = reqtext.capitalize()
     mobile_query = False
 
-    print(text)
+    print('hee',text)
     
     #Query to fetch all brand name and convert it into "list(set(QUERY))"
     #Creating demo list for working purpose
@@ -850,6 +849,7 @@ def searchbox(request):
     
     for brand_index,brand in enumerate(brands):
         if brand in text:
+
             product_matched = False
             brand = brand.lower()  
             #Query to fetch all products of particular brand name and convert it into "list(set(QUERY))"
@@ -875,6 +875,7 @@ def searchbox(request):
             #         temp_products[index] = item[:-2]
              
             for product_index,product in enumerate(products):
+
                 if product in text:
                     product_matched = True
                     mobile_query = True
@@ -899,12 +900,20 @@ def searchbox(request):
                             p_id = x.id    
                         print('id',p_id)
                         return JsonResponse({"productId":p_id})
-            
+                
+
             if not product_matched:
                 #Redirect to web page which comes from dropdown where Brand = <brand>
                 mobile_query = True
-                return JsonResponse({"brandName":text})
+                for x in brands:
+                    if x in text:
+                        if x == "xiaomi" or "Xiaomi":
+                            return JsonResponse({"brandName":"mi"})
+                        else:
+                            return JsonResponse({"brandName":x})
 
+                            
+            
                 
                 
 
@@ -915,7 +924,7 @@ def searchbox(request):
             #Redirect to UserProfile section
             return JsonResponse({"user":"userProfile"})
 
-        elif "Cart" in text:
+        elif "Cart" in text or "Kart" in text:
             #Redirect to Cart page
             return JsonResponse({"cart":"userCart"})
 
@@ -941,7 +950,9 @@ def searchbox(request):
     #         pass
 
         elif "Log Out" in text or "Sign Out" in text or "Sign Me Out" in text:
-            return JsonResponse({"logout":"userLogout"}) 
+            return JsonResponse({"logout":"userLogout"})
+        else:
+            return JsonResponse({"default":"userDefault"}) 
 
 # @login_required
 # def delete_user(request):
